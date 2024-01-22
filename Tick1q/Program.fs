@@ -6,8 +6,42 @@
 
 /// answer to Tick1
 // the header given here is correct.
-let polarToCartesianApprox (r,theta) n = 
-    failwithf "Tick1 not yet implemented" // replace this line with your top-level implementation
+let polarToCartesianApprox (r, theta) n =
+    let n_cos = n / 2               /////
+    let n_sin = (n-1) / 2           /////
+
+    let factorial m =
+        if m = 0 then 1.0
+        else [1.0 .. float m] |> List.reduce (*)
+
+    let sinThetaTerm k =
+        if n = 0 then 0.0           /////
+        else (((-1.0) ** float k) * (theta ** (2.0 * float k + 1.0))) / (factorial (2 * k + 1))
+
+    let cosThetaTerm k =
+        (((-1.0) ** float k) * (theta ** (2.0 * float k))) / (factorial (2 * k))
+
+    let sin_theta =
+        [0 .. n_sin] |> List.map sinThetaTerm |> List.reduce (+)
+
+    let cos_theta =
+        [0 .. n_cos] |> List.map cosThetaTerm |> List.reduce (+)
+
+    (r * cos_theta, r * sin_theta)
+
+    // COMMENTS for Professor:
+    // Assume I remove the lines marked with ///// on their right.
+    // Hi Sir,
+    // I am really not sure why I am unable to pass the test cases. 
+    // I know my factorial function is working properly, and the overall
+    // polarToCartesianApprox function seems to make sense as well. But, I believe it is 
+    // the sin_theta and cos_theta computation that is sometimes very close to 
+    // the actual answer, but does not exactly match the floating point 
+    // values. Also, some values are very far off. But it seems like I have
+    // put down the formula correctly though.
+    // Thank you in advance for your feedback.
+
+
 
 
 //--------------------testbench code - DO NOT CHANGE-----------------------------//
