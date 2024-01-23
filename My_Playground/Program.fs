@@ -182,13 +182,42 @@ let repl n lst =
 let repFourLst = repl 5
 let testyyy = repFourLst [1;2;3]
 
-
+/// test XML
 let pos_only lst =
     let check x = if x < 0 then [] else [x]
 //    List.map check lst
     List.collect check lst
 
 let testyyyyy = pos_only [1;-2;-5;7]
+
+let x = 2
+let name = "Brown"
+// old syntax
+printfn "x is %d, name is %s" x name
+//string interpolation (no type checking of x, name)
+printfn $"x is {x}, name is {name}"
+// string interpolation with format specifier
+printfn $"x is {x}, name is %s{name}"
+
+
+let sumAndMean lst =
+    let length = float (List.length lst)
+    let sum = float (List.reduce (+) lst)
+    sum , (sum / length)
+
+let testing = sumAndMean [3;5;2]
+
+
+let calcHyp (x,y) =
+    sqrt <| (x ** 2.0 + y ** 2.0)
+    
+let tri1 = 3.0 , 4.0
+let hyp1 = calcHyp tri1
+
+
+
+
+
 
 
 let facto n =
@@ -238,10 +267,6 @@ let main argv =
 
     print doubleList[3;10;5]
     
-
-
-
-
     Console.ReadKey() |> ignore // not needed running from Visual Studio
     0 // return an integer exit code
     
