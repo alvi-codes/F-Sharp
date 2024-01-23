@@ -22,7 +22,8 @@ let polarToCartesianApprox (r, theta) n =
         (((-1.0) ** float k) * (theta ** (2.0 * float k))) / (factorial (2 * k))
 
     let sin_theta =
-        [0 .. n_sin] |> List.map sinThetaTerm |> List.reduce (+)
+        // [0 .. n_sin] |> List.map sinThetaTerm |> List.reduce (+)
+        List.reduce (+) (List.map sinThetaTerm [0 .. n_sin])
 
     let cos_theta =
         [0 .. n_cos] |> List.map cosThetaTerm |> List.reduce (+)
