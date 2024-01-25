@@ -151,5 +151,21 @@ module PartX =
     let mapCAndB (lensC: Lens<'A,'C>) (lensB: Lens<'A,'B>) (fc:'C->'C) (fb: 'B->'B) =
         lensMap lensC fc >> lensMap lensB fb
 
-    let combineLens (l1: Lens<'A,'B>) (l2: Lens<'B,'C>) : Lens<'A,'C> =
-        failwithf "not implemented yet" // replace with your definition
+    let combineLens (l1: Lens<'A, 'B>) (l2: Lens<'B, 'C>) : Lens<'A, 'C> =
+        let getterAC a =
+            let b = fst l1 a
+            fst l2 b
+
+        let setterAC c a =
+            let (bGetter, bSetter) = l1
+            let (cGetter, cSetter) = l2
+            let b = bGetter a
+            let updatedB = cSetter c b
+            bSetter updatedB a
+
+        (getterAC, setterAC)
+
+
+
+
+
