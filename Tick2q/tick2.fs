@@ -170,6 +170,9 @@ module PartBCase3 =
 
     open PartACase3 // get unqualified access to Case 3 types and values
 
+    /// Return as a Ok string the name of the correct classification for a studen on given course with given mark.
+    /// Return Error if course or mark are not possible (marks must be in range 100 - 0). The error message should say what the problem in the data was.
+ 
     // Step 1: Use the course to match and find the specific list
     let getGradeBoundaries (course: string) =
         match course with

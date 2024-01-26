@@ -1,4 +1,4 @@
-﻿// Learn more about F# at http://fsharp.org
+﻿
 
 open System
 
@@ -255,6 +255,121 @@ let poly2 coeffs x =
     |> List.reduce (+)
 
 let answers2 = List.map (poly2 [1.0;0.5;0.0;0.25]) [0.0..0.1..1.0]
+
+
+module lens =
+    type Lens<'A, 'B> = ('A -> 'B) * ('B -> 'A -> 'A)
+    type XYPos = { X: float; Y: float }
+    type Rectangle = { TopLeft: XYPos; BottomRight: XYPos }
+    let l1: Lens<Rectangle, XYPos> = (fun rect -> rect.TopLeft), (fun tl rect -> { rect with TopLeft = tl })
+    let l2: Lens<XYPos, float> = (fun xy -> xy.X), (fun x xy -> { xy with X = x })
+
+    // Using the types and lenses defined earlier
+
+    // Initial rectangle
+    let initialRectangle = { TopLeft = { X = 1.0; Y = 2.0 }; BottomRight = { X = 5.0; Y = 6.0 } }
+    printfn "Initial Rectangle: %A" initialRectangle
+
+    // Using l1 to get the TopLeft point
+    let topLeftPoint = fst l1 initialRectangle
+    printfn "TopLeft Point: %A" topLeftPoint
+
+    // Using l2 to get the X-coordinate of the TopLeft point
+    let xCoordinate = fst l2 topLeftPoint
+    printfn "X-coordinate of TopLeft Point: %f" xCoordinate
+
+    // Using l2 to update the X-coordinate of the TopLeft point
+    let updatedTopLeft = snd l2 10.0 topLeftPoint
+    printfn "Updated TopLeft Point: %A" updatedTopLeft
+
+    // Using l1 to update the TopLeft point of the rectangle
+    let updatedRectangle = snd l1 updatedTopLeft initialRectangle
+    printfn "Updated Rectangle: %A" updatedRectangle
+
+
+
+let lst1x = [1 ; -1 ; 6 ; 0 ; -3]
+let lst2x = [2 ; 5 ; 65 ; 3]
+    
+let firstNegative = List.tryFind ((>) 0) // Why is this not <?
+    
+let res1 = firstNegative lst1x
+let res2 = firstNegative lst2x
+
+let foo lst =
+    List.tryFind ((>) 0) lst
+    |> Option.orElse (List.tryFind ((<) 0) lst)
+    |> Option.defaultValue 0
+
+let ttt = foo []
+
+
+
+
+
+let lst = [1;2;3;4]
+    
+match lst with
+| hd::tl -> printfn "This is the head: %d and This is the tail: %A" hd tl
+| [] -> printfn "This is an empty list"
+
+
+match lst with
+| fst::(snd::rest) -> printfn "First element: %d\nSecond Element: %d\n Rest:%A" fst snd rest
+| fst::rest -> printfn "Only one element in input list"
+| [] -> printfn "Empty input list"
+
+
+// Construct function to sum
+let ssum = List.fold (+) 0
+    
+let rres1 = ssum [1;5;-3]  // = 3
+let rres2 = ssum []        // = 0
+
+let rev lstx =
+    List.fold (fun new_lst el -> el::new_lst) [] lstx
+
+let dumy = rev lst
+
+let tet = List.fold (fun n s -> n + (String.length s)) 0 ["a";"bc"; "def"]
+// strongly recommended alternate form for List.fold usage
+// (initState,lstToFold) ||> List.fold (fun oldState element -> newState)
+let tet2 = (0, ["a" ; "bc" ; "def"]) ||> List.fold (fun len str -> str.Length + len)
+
+
+let a : Map<string,int> = Map.empty // create an empty Map value
+
+let a' = Map.add "first" 10 a // create an updated Map - NB this does not change a
+
+let a'' = Map.add "second" 20 a'
+
+let b = Map.ofList [ "April",30 ; "June",30 ; "September",30 ; "November",30 ; "February",28 ]
+
+let ttttt = a''["first"]
+let tttttt = a''["second"]
+
+let a''' = Map.add "" 30 a''
+let tttttttt = a'''[""]
+
+let months = Map.ofList [ "April",30 ; "June",30 ; "September",30 ; "November",30 ; "February",28 ]
+let txt = Map.toList months 
+
+/// testing XML
+let inverseMap m =
+    m
+    |> Map.toList
+    |> List.map (fun (k,v) -> (v,k))
+    |> Map.ofList
+
+let inv_map = inverseMap months
+
+let data = "The quick brown fox jumps over the lazy dog" 
+let histogram (data:string) = 
+    data
+    |> Seq.toList // convert string to list of char
+    /// list of chars in string data
+
+let demox = histogram data
 
 
 
