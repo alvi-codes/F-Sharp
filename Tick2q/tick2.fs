@@ -2,7 +2,6 @@ module Tick2
 
 //---------------------------Tick2 PartA skeleton code-------------------------------//
 
-
 module PartACase1 =
     () // dummy value to make submodule non-empty
     // Three record types, one data value of each type. Choose suitable names.
@@ -51,7 +50,6 @@ module PartACase1 =
         Fail=         0;
     }
 
-
 module PartACase2 =
     () // dummy value to make submodule non-empty
     // One record type, three data values of this type. Choose suitable names.
@@ -87,7 +85,6 @@ module PartACase2 =
         Bound0=  "Fail";
     }
 
-
 module PartACase3 =
     () // dummy value to make submodule non-empty
     // One type, three data values of this type. Choose suitable names.
@@ -97,11 +94,10 @@ module PartACase3 =
 
     let bEngGradeBoundaries = ["First",70; "UpperSecond", 60; "LowerSecond",50; "Third",40; "Fail",0] 
 
-//---------------------------Tick2 PartB case 2 skeleton code-------------------------------//
-
+//---------------------------Tick2 PartB case 2 skeleton code------------------------c-------//
 module PartBCase2 =
 
-    open PartACase2
+    open PartACase2 // get unqualified access to Case 2 types and values
 
     let findBoundaries (course: string) : Option<gradeBoundaries> =
         match course with
@@ -110,15 +106,16 @@ module PartBCase2 =
         | "BEng" -> Some bEngGradeBoundaries
         | _ -> None
 
+    /// Return as a Ok string the name of the correct classification for a student
+    /// on given course with given mark.
+    /// Return Error if course or mark are not possible (marks must be in range 100 - 0). 
+    /// The error message should say what the problem in the data was.
     let classify (course: string) (mark: float) : Result<string, string> =
-        // Check if the mark is in the valid range
         if mark < 0.0 || mark > 100.0 then
             Error "Invalid mark. Marks must be in the range 0 - 100."
         else
-            // Determine the grade boundaries based on the course
             match findBoundaries course with
             | Some boundaries ->
-                // Determine the classification based on the mark
                 let classification =
                     if (course = "MEng" || course = "MSc") && (mark < 50.0) then boundaries.Bound0
                     else 
@@ -127,69 +124,27 @@ module PartBCase2 =
                         elif mark >= 50.0 then boundaries.Bound50
                         elif mark >= 40.0 then boundaries.Bound40
                         else boundaries.Bound0
-
                 Ok classification
-            | None -> Error "Invalid course. Supported courses are MSc, MEng, and BEng."
-
-module OLD_PartBCase2 =
-
-    open PartACase2 // get unqualified access to Case 2 types and values
-
-    /// Return as a Ok string the name of the correct classification for a student
-    /// on given course with given mark.
-    /// Return Error if course or mark are not possible (marks must be in range 100 - 0). 
-    /// The error message should say what the problem in the data was.
-    let classify (course: string) (mark: float) : Result<string,string> =
-        printf "Run \n"
-        // Check if the mark is in the valid range
-        if mark < 0.0 || mark > 100.0 then
-            Error "Invalid mark. Marks must be in the range 0 - 100."
-        else
-            // Determine the grade boundaries based on the course
-            let boundaries =
-                match course with
-                | "MSc" -> mScGradeBoundaries
-                | "MEng" -> mEngGradeBoundaries
-                | "BEng" -> bEngGradeBoundaries
-                | _ -> failwithf "Invalid course. Supported courses are MSc, MEng, and BEng."
-
-            // Determine the classification based on the mark
-            let classification =
-                if (course = "MEng" || course = "MSc") && (mark < 50.0) then boundaries.Bound0
-                else 
-                    if mark   >= 70.0 then boundaries.Bound70
-                    elif mark >= 60.0 then boundaries.Bound60
-                    elif mark >= 50.0 then boundaries.Bound50
-                    elif mark >= 40.0 then boundaries.Bound40
-                    else boundaries.Bound0
-
-            Ok (classification)
+            | None -> Error "Invalid course. Valid courses are MSc, MEng, and BEng."
 
 //---------------------------Tick2 PartB case 3 skeleton code-------------------------------//
 module PartBCase3 =
 
     open PartACase3 // get unqualified access to Case 3 types and values
 
-    /// Return as a Ok string the name of the correct classification for a studen on given course with given mark.
-    /// Return Error if course or mark are not possible (marks must be in range 100 - 0). The error message should say what the problem in the data was.
- 
-    // Step 1: Use the course to match and find the specific list
     let getGradeBoundaries (course: string) =
         match course with
         | "MSc" -> mScGradeBoundaries
         | "MEng" -> mEngGradeBoundaries
         | "BEng" -> bEngGradeBoundaries
-        | _ -> []
+        | _ -> failwithf "Invalid course. Valid courses are MSc, MEng, and BEng."
 
-    // Step 2: Swap the pair values
     let swapPairValues (lst: ('a * 'b) list) : ('b * 'a) list =
         lst |> List.map (fun (x, y) -> (y, x))
 
-    // Step 3: Make it a map using Map.fromList
     let makeMap (lst: ('a * 'b) list) : Map<'a, 'b> =
         Map.ofList lst
 
-    // Step 4: Use another function to find the grade boundary
     let findGradeBoundary (course: string) (mark: float) : (int) =
             if (course = "MEng" || course = "MSc") && (mark < 50.0) then 0
             else 
@@ -198,29 +153,31 @@ module PartBCase3 =
                 elif mark >= 50.0 then 50
                 elif mark >= 40.0 then 40
                 else 0
-
-    // Main classify function
+ 
+    /// Return as a Ok string the name of the correct classification for a studen on given course with given mark.
+    /// Return Error if course or mark are not possible (marks must be in range 100 - 0). The error message should say what the problem in the data was.
     let classify (course: string) (mark: float) : Result<string, string> =
-        // Check if the mark is in the valid range
         if mark < 0.0 || mark > 100.0 then
             Error "Invalid mark. Marks must be in the range 0 - 100."
         else
-            // Step 1: Get the grade boundaries for the course
             let boundaries = getGradeBoundaries course
 
-            // Step 2: Swap the pair values
             let swappedBoundaries = swapPairValues boundaries
 
-            // Step 3: Make it a map using Map.fromList
             let boundariesMap = makeMap swappedBoundaries
 
-            // Step 4: Use another function to find the grade boundary
             let boundry = findGradeBoundary course mark
 
             Ok (boundariesMap[boundry])
 
-//------------------------------------Tick2 PartC skeleton code-----------------------------------//
 
+//----------------------------------------------
+// PartBCase2 is better than PartBCase3 in terms of its simplicity and clarity in handling optional values using the Option type.
+// PartBCase3 is better than PartBCase2 due to its functional composition and modularity, enhancing readability and promoting code reusability.
+//----------------------------------------------
+
+
+//------------------------------------Tick2 PartC skeleton code-----------------------------------//
 module PartC =
     open PartACase3 // get unqualified access to Case 3 types and values
     open PartBCase3 // get unqualified access to classify function
@@ -275,11 +232,30 @@ module PartC =
             // Return Ok classname or an error if there is any error.
             // (option and error returns ignored in above comments, must be dealt with)
 
-        failwithf "Not implemented" // replace by your code ()
+        let validateCourseAndTotal () =
+            if not (List.contains course boundaries) then
+                Error "Invalid course. Valid courses are MSc, MEng, and BEng."
+            else
+                match markTotal marks course with
+                | Some t when t >= 0.0 && t <= 100.0 -> Ok t
+                | _ -> Error "Invalid total mark. Total marks must be in the range 0 - 100."
 
+        let classifyWithUplift boundaries total =
+            let rec loop = function
+                | [] -> Error "Unable to determine classification."
+                | boundary :: rest ->
+                    match upliftFunc marks boundary course with
+                    | Ok result when Option.isSome result.Uplift ->
+                        let effectiveMark = total + Option.defaultValue 0.0 result.Uplift
+                        match classify course effectiveMark with
+                        | Ok classification -> Ok classification
+                        | Error errMsg -> Error errMsg
+                    | _ -> loop rest
+            loop boundaries
 
-
-
+        match validateCourseAndTotal () with
+        | Ok total -> classifyWithUplift boundaries total
+        | Error errMsg -> Error errMsg
 
 //------------------------------Simple test data and functions---------------------------------//
 module TestClassify =
@@ -312,16 +288,13 @@ module TestClassify =
                                 -> printfn $"Test Failed: {course}, {mark}, expected className={className}, \
                                           actual className={actual}")
 
-
 //-------------------------------------------------------------------------------------------//
 //---------------------------------Run Part B tests------------------------------------------//
 //-------------------------------------------------------------------------------------------//
-
 open TestClassify
 let runTests() =
     runClassifyTests classifyUnitTests PartBCase2.classify "Case2"
     runClassifyTests classifyUnitTests PartBCase3.classify "Case3"
-
 
 //-------------------------------------------------------------------------------------------//
 //---------------------------------Tick2 Part X Skeleton code--------------------------------//
