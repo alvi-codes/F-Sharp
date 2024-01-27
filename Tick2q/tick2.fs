@@ -94,7 +94,7 @@ module PartACase3 =
 
     let bEngGradeBoundaries = ["First",70; "UpperSecond", 60; "LowerSecond",50; "Third",40; "Fail",0] 
 
-//---------------------------Tick2 PartB case 2 skeleton code------------------------c-------//
+//---------------------------Tick2 PartB case 2 skeleton code-------------------------------//
 module PartBCase2 =
 
     open PartACase2 // get unqualified access to Case 2 types and values
@@ -172,8 +172,20 @@ module PartBCase3 =
 
 
 //----------------------------------------------
+// CLassify Function Comparison:
 // PartBCase2 is better than PartBCase3 in terms of its simplicity and clarity in handling optional values using the Option type.
 // PartBCase3 is better than PartBCase2 due to its functional composition and modularity, enhancing readability and promoting code reusability.
+
+// Data Definition Comparison:
+// PartACase1:
+//      -> Advantage: Clear separation of concerns with distinct record types for MSc, MEng, and BEng grades, providing a more structured representation.
+//      -> Disadvantage: Code duplication in record types and grade boundaries, leading to potential maintenance challenges if changes are needed across all types.
+// PartACase2:
+//      -> Advantage: Centralized definition of grade boundaries in a single record type, promoting code reusability and easier maintenance.
+//      -> Disadvantage: Lack of type safety, as the grade boundaries are represented as strings, which may lead to runtime errors if there are typos or changes in the future.
+// PartACase3:
+//      -> Advantage: Compact representation using tuples, reducing boilerplate code and providing a concise view of grade boundaries.
+//      -> Disadvantage: Loss of type information, making it more error-prone and less self-documenting.
 //----------------------------------------------
 
 
