@@ -373,6 +373,10 @@ let demox = histogram data
 
 
 
+type A1 = | Monday1 of Unit | Tuesday1 of Unit
+type A2 = Monday2 | Tuesday2
+
+
 [<EntryPoint>]
 let main argv =
     print "Hello World from F#!"
